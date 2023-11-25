@@ -56,7 +56,6 @@
             <id>bethibande-releases</id>
             <url>https://maven.bethibande.com/releases</url>
         </repository>
-        <downloadUrl></downloadUrl>
     </distributionManagement>
 
     <issueManagement>
