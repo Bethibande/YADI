@@ -1,11 +1,11 @@
 package com.yadi.core
 
 import com.yadi.core.bind.DependencyBinding
+import java.util.concurrent.CopyOnWriteArrayList
 
 class DependencyContainer: Searchable {
 
-    // TODO: make edit thread-safe
-    private val views = mutableListOf<DependencyView>()
+    private val views = CopyOnWriteArrayList<DependencyView>()
 
     fun addView(view: DependencyView) {
         views.add(view)
