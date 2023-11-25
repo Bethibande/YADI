@@ -9,4 +9,11 @@ interface Bindable {
 
     fun bind(binding: DependencyBinding<*>): Bindable
 
+    fun bind(bindings: List<DependencyBinding<*>>): Bindable = apply {
+        bindings.forEach { binding -> bind(binding) }
+    }
+    fun bind(vararg bindings: DependencyBinding<*>): Bindable = apply {
+        bindings.forEach { binding -> bind(binding) }
+    }
+
 }

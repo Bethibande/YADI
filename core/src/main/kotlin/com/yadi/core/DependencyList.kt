@@ -23,6 +23,10 @@ class DependencyList: Bindable, Searchable {
         }
     }
 
+    override fun bind(bindings: List<DependencyBinding<*>>) = super.bind(bindings) as DependencyList
+
+    override fun bind(vararg bindings: DependencyBinding<*>) = super.bind(*bindings) as DependencyList
+
     @Suppress("UNCHECKED_CAST")
     override fun <T> find(type: Class<T>, tag: Any?): DependencyBinding<T>? = lock.read {
         val bindings = this.bindings[type] ?: return@read null

@@ -5,34 +5,23 @@ import com.yadi.core.inject.Bindable
 import com.yadi.core.inject.Injectable
 import com.yadi.core.search.InstanceProvider
 import com.yadi.core.search.Searchable
-import java.util.concurrent.CopyOnWriteArrayList
 
-class Module: Container {
+class Module: Container, Injectable {
 
-    private val base = DependencyList()
-    private val views = CopyOnWriteArrayList<Searchable>(arrayOf(base))
+    private val bindable = DependencyList()
+    private val container = DefaultContainer().inject(bindable)
 
-    override fun inject(searchable: Searchable) = apply {
-        views.add(searchable)
-    }
+    override fun inject(searchable: Searchable): Module = apply { container.inject(searchable) }
 
-    override fun inject(searchable: Collection<Searchable>): Container = apply {
-        views.addAll(searchable)
-    }
+    override fun inject(searchable: Collection<Searchable>): Module = apply { container.inject(searchable) }
 
-    override fun inject(vararg searchable: Searchable): Container = apply {
-        views.addAll(searchable)
-    }
+    override fun inject(vararg searchable: Searchable): Container = apply { container.inject(*searchable) }
 
-    override fun bind(binding: DependencyBinding<*>) = base.bind(binding)
+    override fun <T> find(type: Class<T>, tag: Any?): DependencyBinding<T>? = container.find(type, tag)
 
-    override fun <T> find(type: Class<T>, tag: Any?): DependencyBinding<T>? {
-        return views.firstNotNullOfOrNull { view -> view.find(type, tag) }
-    }
+    override fun <T> findAll(type: Class<T>): List<DependencyBinding<T>> = container.findAll(type)
 
-    override fun <T> findAll(type: Class<T>): List<DependencyBinding<T>> {
-        return views.map { view -> view.findAll(type) }.flatten()
-    }
+    override fun bind(binding: DependencyBinding<*>): Bindable = bindable.bind(binding)
 }
 
 class ModuleBuilder(vararg imports: Searchable): Injectable, InstanceProvider {
