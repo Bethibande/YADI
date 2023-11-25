@@ -14,7 +14,7 @@ infix fun DependencyBinding<*>.tagged(tag: Any) {
  */
 interface Injectable {
 
-    class Binding<T>(private val type: Class<T>, private val builder: Injectable) {
+    class TypeBindingBuilder<T>(private val type: Class<T>, private val builder: Injectable) {
 
         fun bind(provider: DependencyProvider<T>, tag: Any?) = DependencyBinding(type, tag, provider)
             .apply { builder.bind(this) }
@@ -57,6 +57,6 @@ inline fun <reified T> Injectable.factory(noinline fn: Factory<T>) = factory(nul
 inline fun <reified T> Injectable.singleton(tag: Any?, noinline fn: Factory<T>) = singleton(T::class.java, tag, fn)
 inline fun <reified T> Injectable.singleton(noinline fn: Factory<T>) = singleton(null, fn)
 
-inline fun <reified T> Injectable.bind(fn: Injectable.Binding<T>.() -> Unit) {
-    fn.invoke(Injectable.Binding(T::class.java, this))
+inline fun <reified T> Injectable.bind(fn: Injectable.TypeBindingBuilder<T>.() -> Unit) {
+    fn.invoke(Injectable.TypeBindingBuilder(T::class.java, this))
 }
