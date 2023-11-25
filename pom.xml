@@ -12,7 +12,7 @@
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <name>consoleApp</name>
+    <name>YADI</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,6 +50,26 @@
             <version>1.9.21</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>bethibande-releases</id>
+            <url>https://maven.bethibande.com/releases</url>
+        </repository>
+        <downloadUrl></downloadUrl>
+    </distributionManagement>
+
+    <issueManagement>
+        <url>https://github.com/Bethibande/YADI/issues</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>Apache-2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
