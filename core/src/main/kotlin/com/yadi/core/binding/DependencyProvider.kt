@@ -1,4 +1,4 @@
-package com.yadi.core.bind
+package com.yadi.core.binding
 
 typealias Factory<T> = () -> T
 

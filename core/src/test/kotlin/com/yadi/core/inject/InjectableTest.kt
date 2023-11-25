@@ -1,6 +1,7 @@
-package com.yadi.core.build
+package com.yadi.core.inject
 
-import com.yadi.core.DependencyView
+import com.yadi.core.DependencyList
+import com.yadi.core.binding.DependencyBinding
 import kotlin.test.assertIs
 import org.junit.jupiter.api.Test
 
@@ -11,9 +12,9 @@ class InjectableTest {
     class ClassB: Service
     class ClassC: Service
 
-    private fun view() = DependencyView()
-    private fun injector(view: DependencyView) = object: Injectable {
-        override fun view(): DependencyView = view
+    private fun view() = DependencyList()
+    private fun injector(view: DependencyList) = object: Injectable {
+        override fun bind(binding: DependencyBinding<*>): Bindable = apply { view.bind(binding) }
     }
 
     @Test

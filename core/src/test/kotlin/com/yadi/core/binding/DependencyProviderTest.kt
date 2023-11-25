@@ -1,4 +1,4 @@
-package com.yadi.core.bind
+package com.yadi.core.binding
 
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.test.assertEquals

@@ -1,12 +1,12 @@
 package com.yadi.core
 
-import com.yadi.core.bind.DependencyBinding
-import com.yadi.core.bind.DependencyProvider
+import com.yadi.core.binding.DependencyBinding
+import com.yadi.core.binding.DependencyProvider
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.junit.jupiter.api.Test
 
-class DependencyViewTest {
+class DependencyListTest {
 
     companion object {
         private val PROVIDER_1 = DependencyProvider { "test" }
@@ -18,7 +18,7 @@ class DependencyViewTest {
         private val BINDING_3 = DependencyBinding(Boolean::class.java, 1, PROVIDER_3)
         private val BINDING_4 = DependencyBinding(Boolean::class.java, 2, PROVIDER_3)
 
-        private val VIEW = DependencyView().bind(BINDING_1)
+        private val VIEW = DependencyList().bind(BINDING_1)
             .bind(BINDING_2)
             .bind(BINDING_3)
             .bind(BINDING_4)

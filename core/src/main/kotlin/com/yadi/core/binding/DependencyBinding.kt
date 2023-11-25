@@ -1,4 +1,4 @@
-package com.yadi.core.bind
+package com.yadi.core.binding
 
 import kotlin.reflect.KProperty
 
@@ -11,5 +11,9 @@ data class DependencyBinding<T>(
     fun get() = provider.provide()
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T = get()
+
+    infix fun tagged(tag: Any) {
+        this.tag = tag
+    }
 
 }
