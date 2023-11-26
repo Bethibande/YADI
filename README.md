@@ -1,7 +1,9 @@
-## YADI
+<img src="https://maven.bethibande.com/api/badge/latest/releases/com/yadi/core?name=Reposilite&prefix=v" alt="maven version"/>
+
+# YADI
 **Y**et **A**nother **D**ependency **I**njector
 
-### Usage
+## Usage
 ```kotlin
 val database = module {
     bind<DatabaseConnector> {
@@ -23,7 +25,10 @@ val app = module {
 }
 ```
 
-### Import
+## Javadocs
+- [Core (latest)](https://maven.bethibande.com/javadoc/releases/com/yadi/core/latest)
+
+## Import
 Note: replace 'VERSION' with the version you want to use
 #### Maven
 ```xml
