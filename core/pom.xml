@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.yadi</groupId>
         <artifactId>YADI-parent</artifactId>
-        <version>1.0</version>
+        <version>0.9</version>
     </parent>
 
     <artifactId>core</artifactId>

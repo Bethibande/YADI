@@ -9,7 +9,7 @@
         <module>core</module>
     </modules>
     <groupId>com.yadi</groupId>
-    <version>1.0</version>
+    <version>0.9</version>
     <packaging>pom</packaging>
 
     <name>YADI</name>
@@ -75,6 +75,11 @@
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.16.0</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
