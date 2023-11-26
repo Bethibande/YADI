@@ -70,4 +70,61 @@ class DefaultContainerTest {
         (CONTAINER.injected() as MutableList).remove(mainModule)
     }
 
+    @Test
+    fun test5() {
+        val module1 = module {  }
+        val module2 = module {  }
+
+        CONTAINER.inject(module1, module2)
+
+        assertEquals(4, CONTAINER.injected().size)
+        assertContains(CONTAINER.injected(), module1)
+        assertContains(CONTAINER.injected(), module2)
+
+        CONTAINER.remove(module1)
+
+        assertEquals(3, CONTAINER.injected().size)
+        assertContains(CONTAINER.injected(), module2)
+        assertContains(CONTAINER.injected(), DEPENDENCIES_1)
+        assertContains(CONTAINER.injected(), DEPENDENCIES_2)
+
+        CONTAINER.remove(module2)
+    }
+
+    @Test
+    fun test6() {
+        val module1 = module {  }
+        val module2 = module {  }
+
+        CONTAINER.inject(module1, module2)
+
+        assertEquals(4, CONTAINER.injected().size)
+        assertContains(CONTAINER.injected(), module1)
+        assertContains(CONTAINER.injected(), module2)
+
+        CONTAINER.remove(module1, module2)
+
+        assertEquals(2, CONTAINER.injected().size)
+        assertContains(CONTAINER.injected(), DEPENDENCIES_1)
+        assertContains(CONTAINER.injected(), DEPENDENCIES_2)
+    }
+
+    @Test
+    fun test7() {
+        val module1 = module {  }
+        val module2 = module {  }
+
+        CONTAINER.inject(module1, module2)
+
+        assertEquals(4, CONTAINER.injected().size)
+        assertContains(CONTAINER.injected(), module1)
+        assertContains(CONTAINER.injected(), module2)
+
+        CONTAINER.remove(listOf(module1, module2))
+
+        assertEquals(2, CONTAINER.injected().size)
+        assertContains(CONTAINER.injected(), DEPENDENCIES_1)
+        assertContains(CONTAINER.injected(), DEPENDENCIES_2)
+    }
+
 }

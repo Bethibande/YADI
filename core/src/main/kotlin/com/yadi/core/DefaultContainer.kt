@@ -8,20 +8,26 @@ class DefaultContainer: Container {
 
     private val views = CopyOnWriteArrayList<Searchable>()
 
-    override fun inject(searchable: Searchable): Container = apply {
+    override fun inject(searchable: Searchable) = apply {
         checkForLoop(searchable)
         views.add(searchable)
     }
 
-    override fun inject(searchable: Collection<Searchable>): Container = apply {
+    override fun inject(searchable: Collection<Searchable>) = apply {
         checkForLoop(*searchable.toTypedArray())
         views.addAll(searchable)
     }
 
-    override fun inject(vararg searchable: Searchable): Container = apply {
+    override fun inject(vararg searchable: Searchable) = apply {
         checkForLoop(*searchable)
         views.addAll(searchable)
     }
+
+    override fun remove(searchable: Searchable) = apply { views.remove(searchable) }
+
+    override fun remove(searchable: Collection<Searchable>) = apply { views.removeAll(searchable.toSet()) }
+
+    override fun remove(vararg searchable: Searchable) = apply { views.removeAll(searchable.toSet()) }
 
     override fun injected(): Collection<Searchable> = views
 

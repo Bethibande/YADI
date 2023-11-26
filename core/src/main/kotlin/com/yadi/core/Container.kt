@@ -14,6 +14,10 @@ interface Container: InstanceProvider {
     fun inject(searchable: Collection<Searchable>): Container
     fun inject(vararg searchable: Searchable): Container
 
+    fun remove(searchable: Searchable): Container
+    fun remove(searchable: Collection<Searchable>): Container
+    fun remove(vararg searchable: Searchable): Container
+
     fun injected(): Collection<Searchable>
 
     /**

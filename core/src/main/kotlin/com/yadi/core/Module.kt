@@ -11,13 +11,19 @@ class Module: Container, Injectable {
     private val bindable = DependencyList()
     private val container = DefaultContainer().inject(bindable)
 
-    override fun inject(searchable: Searchable): Module = apply { container.inject(searchable) }
+    override fun inject(searchable: Searchable) = apply { container.inject(searchable) }
 
-    override fun inject(searchable: Collection<Searchable>): Module = apply { container.inject(searchable) }
+    override fun inject(searchable: Collection<Searchable>) = apply { container.inject(searchable) }
 
-    override fun inject(vararg searchable: Searchable): Container = apply { container.inject(*searchable) }
+    override fun inject(vararg searchable: Searchable) = apply { container.inject(*searchable) }
 
     override fun injected(): Collection<Searchable> = container.injected()
+
+    override fun remove(searchable: Searchable) = apply { container.remove(searchable) }
+
+    override fun remove(searchable: Collection<Searchable>) = apply { container.remove(searchable) }
+
+    override fun remove(vararg searchable: Searchable) = apply { container.remove(*searchable) }
 
     override fun <T> find(type: Class<T>, tag: Any?): DependencyBinding<T>? = container.find(type, tag)
 
