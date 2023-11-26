@@ -5,14 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>YADI-parent</artifactId>
-    <modules>
-        <module>core</module>
-    </modules>
     <groupId>com.yadi</groupId>
     <version>0.9</version>
     <packaging>pom</packaging>
 
     <name>YADI</name>
+
+    <modules>
+        <module>core</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
