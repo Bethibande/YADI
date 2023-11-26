@@ -3,10 +3,12 @@ package com.yadi.core
 import com.yadi.core.binding.DependencyBinding
 import com.yadi.core.binding.DependencyProvider
 import com.yadi.core.inject.bind
+import com.yadi.core.inject.bindFactory
 import com.yadi.core.inject.bindSingleton
 import com.yadi.core.search.instance
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class ModuleTest {
 
@@ -104,6 +106,38 @@ class ModuleTest {
         assertEquals("a", core.instance())
         assertEquals("World", core.instance("name"))
         assertEquals("Hello World!", core.instance("message"))
+    }
+
+    @Test
+    fun test7() {
+        val module = module {
+            bindSingleton { "abc" }
+            bindSingleton { "def" } tagged "a"
+        }
+
+        assertEquals("abc", module.instance<String>())
+        assertEquals("def", module.instance<String>("a"))
+    }
+
+    @Test
+    fun test8() {
+        val module = module {
+            bindFactory { "abc" }
+            bindFactory { "def" } tagged "a"
+        }
+
+        assertEquals("abc", module.instance<String>())
+        assertEquals("def", module.instance<String>("a"))
+    }
+
+    @Test
+    fun test9() {
+        val module = module {
+            bindSingleton { "abc" }
+        }
+
+        assertEquals("abc", module.instance<String>())
+        assertThrows<NoSuchElementException> { module.instance<String>("a") }
     }
 
 }
