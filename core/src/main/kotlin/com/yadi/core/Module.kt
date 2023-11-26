@@ -17,6 +17,8 @@ class Module: Container, Injectable {
 
     override fun inject(vararg searchable: Searchable): Container = apply { container.inject(*searchable) }
 
+    override fun injected(): Collection<Searchable> = container.injected()
+
     override fun <T> find(type: Class<T>, tag: Any?): DependencyBinding<T>? = container.find(type, tag)
 
     override fun <T> findAll(type: Class<T>): List<DependencyBinding<T>> = container.findAll(type)
