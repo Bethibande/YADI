@@ -1,4 +1,5 @@
-<img src="https://maven.bethibande.com/api/badge/latest/releases/com/yadi/core?name=Reposilite&prefix=v" alt="maven version"/>
+[![Build Status](https://drone.bethibande.com/api/badges/Bethibande/YADI/status.svg)](https://drone.bethibande.com/Bethibande/YADI)
+[![Maven](https://maven.bethibande.com/api/badge/latest/releases/com/yadi/core?name=Reposilite&prefix=v)](https://maven.bethibande.com)
 
 # YADI
 **Y**et **A**nother **D**ependency **I**njector
