@@ -29,8 +29,12 @@ interface Container: InstanceProvider {
      * @see contains
      */
     fun checkForLoop(searchable: Searchable) {
+        if (searchable == this) throw IllegalArgumentException("Cannot inject an object into itself")
         if (contains(searchable)) {
             throw IllegalStateException("Cannot inject '$searchable', the given object already exists in the current tree.")
+        }
+        if (searchable is Container && searchable.contains(this)) {
+            throw IllegalStateException("Cannot inject '$searchable', this object already exists within its tree.")
         }
     }
 
@@ -44,8 +48,14 @@ interface Container: InstanceProvider {
      * @see checkForLoop
      */
     fun checkForLoop(vararg searchable: Searchable) {
+        if (searchable.contains(this)) throw IllegalArgumentException("Cannot inject an object into itself")
         if (contains(*searchable)) {
-            throw IllegalStateException("Cannot inject '$searchable', the given object already exists in the current tree.")
+            throw IllegalStateException("Cannot inject objects, one or more of them already exist in the current tree.")
+        }
+        searchable.forEach { child ->
+            if (child is Container && child.contains(this)) {
+                throw IllegalStateException("Cannot inject '$child', this object already exists within its tree.")
+            }
         }
     }
 

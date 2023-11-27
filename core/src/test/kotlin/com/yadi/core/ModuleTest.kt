@@ -8,7 +8,10 @@ import com.yadi.core.inject.bindSingleton
 import com.yadi.core.search.instance
 import kotlin.test.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Timeout
 import org.junit.jupiter.api.assertThrows
+import java.util.concurrent.TimeUnit
+import kotlin.test.assertContains
 
 class ModuleTest {
 
@@ -138,6 +141,45 @@ class ModuleTest {
 
         assertEquals("abc", module.instance<String>())
         assertThrows<NoSuchElementException> { module.instance<String>("a") }
+    }
+
+    @Test
+    fun test10() {
+        val module = DefaultContainer()
+        assertThrows<IllegalArgumentException> { module.inject(module) }
+    }
+
+    @Test
+    fun test11() {
+        val module1 = DefaultContainer()
+        val module2 = DefaultContainer()
+        assertThrows<IllegalArgumentException> { module1.inject(module1, module2) }
+    }
+
+    @Test
+    fun test12() {
+        val module1 = DefaultContainer()
+
+        module1.inject(MODULE)
+
+        assertEquals(1, module1.injected().size)
+        assertContains(module1.injected(), MODULE)
+
+        assertThrows<IllegalStateException> { MODULE.inject(module1) }
+    }
+
+    @Test
+    fun test13() {
+        val module1 = DefaultContainer()
+        val module2 = DefaultContainer()
+
+        module1.inject(MODULE, module2)
+
+        assertEquals(2, module1.injected().size)
+        assertContains(module1.injected(), MODULE)
+        assertContains(module1.injected(), module2)
+
+        assertThrows<IllegalStateException> { MODULE.inject(module1) }
     }
 
 }

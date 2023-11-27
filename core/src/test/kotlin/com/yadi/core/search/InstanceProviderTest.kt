@@ -35,6 +35,7 @@ class InstanceProviderTest {
         private val PROVIDER = object: InstanceProvider {
             override fun <T> find(type: Class<T>, tag: Any?): DependencyBinding<T>? = VIEW.find(type, tag)
             override fun <T> findAll(type: Class<T>): List<DependencyBinding<T>> = VIEW.findAll(type)
+            override fun findAll(): List<DependencyBinding<*>> = VIEW.findAll()
         }
     }
 

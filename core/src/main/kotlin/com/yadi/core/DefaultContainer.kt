@@ -38,4 +38,6 @@ class DefaultContainer: Container {
     override fun <T> findAll(type: Class<T>): List<DependencyBinding<T>> {
         return views.map { view -> view.findAll(type) }.flatten()
     }
+
+    override fun findAll(): List<DependencyBinding<*>> = views.map { view -> view.findAll() }.flatten()
 }

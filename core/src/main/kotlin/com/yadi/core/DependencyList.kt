@@ -37,4 +37,7 @@ class DependencyList: Bindable, Searchable {
     override fun <T> findAll(type: Class<T>): List<DependencyBinding<T>> = lock.read {
         bindings[type] as? List<DependencyBinding<T>> ?: emptyList()
     }
+
+    override fun findAll(): List<DependencyBinding<*>> = bindings.values.flatten()
+
 }

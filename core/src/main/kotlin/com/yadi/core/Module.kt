@@ -6,16 +6,29 @@ import com.yadi.core.inject.Injectable
 import com.yadi.core.search.InstanceProvider
 import com.yadi.core.search.Searchable
 
-class Module: Container, Injectable {
+class Module(): Container, Injectable {
 
     private val bindable = DependencyList()
     private val container = DefaultContainer().inject(bindable)
 
-    override fun inject(searchable: Searchable) = apply { container.inject(searchable) }
+    constructor(bindings: Searchable): this() {
+        bindable.bind(bindings.findAll())
+    }
 
-    override fun inject(searchable: Collection<Searchable>) = apply { container.inject(searchable) }
+    override fun inject(searchable: Searchable) = apply {
+        checkForLoop(searchable)
+        container.inject(searchable)
+    }
 
-    override fun inject(vararg searchable: Searchable) = apply { container.inject(*searchable) }
+    override fun inject(searchable: Collection<Searchable>) = apply {
+        checkForLoop(*searchable.toTypedArray())
+        container.inject(searchable)
+    }
+
+    override fun inject(vararg searchable: Searchable) = apply {
+        checkForLoop(*searchable)
+        container.inject(*searchable)
+    }
 
     override fun injected(): Collection<Searchable> = container.injected()
 
@@ -28,6 +41,8 @@ class Module: Container, Injectable {
     override fun <T> find(type: Class<T>, tag: Any?): DependencyBinding<T>? = container.find(type, tag)
 
     override fun <T> findAll(type: Class<T>): List<DependencyBinding<T>> = container.findAll(type)
+
+    override fun findAll(): List<DependencyBinding<*>> = container.findAll()
 
     override fun bind(binding: DependencyBinding<*>): Bindable = bindable.bind(binding)
 }
@@ -43,6 +58,8 @@ class ModuleBuilder(vararg imports: Searchable): Injectable, InstanceProvider {
 
     override fun <T> findAll(type: Class<T>): List<DependencyBinding<T>> = importModule.findAll(type)
 
+    override fun findAll(): List<DependencyBinding<*>> = importModule.findAll()
+
     fun moduleBindings() = moduleBindings
 
 }
@@ -51,5 +68,5 @@ fun module(vararg imports: Searchable, fn: ModuleBuilder.() -> Unit): Module {
     val builder = ModuleBuilder(*imports)
     fn.invoke(builder)
 
-    return Module().inject(builder.moduleBindings())
+    return Module(builder.moduleBindings())
 }

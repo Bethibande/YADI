@@ -127,4 +127,43 @@ class DefaultContainerTest {
         assertContains(CONTAINER.injected(), DEPENDENCIES_2)
     }
 
+    @Test
+    fun test8() {
+        val module = DefaultContainer()
+        assertThrows<IllegalArgumentException> { module.inject(module) }
+    }
+
+    @Test
+    fun test9() {
+        val module1 = DefaultContainer()
+        val module2 = DefaultContainer()
+        assertThrows<IllegalArgumentException> { module1.inject(module1, module2) }
+    }
+
+    @Test
+    fun test10() {
+        val module1 = DefaultContainer()
+
+        module1.inject(CONTAINER)
+
+        assertEquals(1, module1.injected().size)
+        assertContains(module1.injected(), CONTAINER)
+
+        assertThrows<IllegalStateException> { CONTAINER.inject(module1) }
+    }
+
+    @Test
+    fun test11() {
+        val module1 = DefaultContainer()
+        val module2 = DefaultContainer()
+
+        module1.inject(CONTAINER, module2)
+
+        assertEquals(2, module1.injected().size)
+        assertContains(module1.injected(), CONTAINER)
+        assertContains(module1.injected(), module2)
+
+        assertThrows<IllegalStateException> { CONTAINER.inject(module1) }
+    }
+
 }
