@@ -9,7 +9,7 @@ steps:
   - mvn test -B
 ---
 kind: pipeline
-name: test
+name: prodction
 
 steps:
 - name: test
