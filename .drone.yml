@@ -1,9 +1,34 @@
 kind: pipeline
-name: default
+name: test
 
 steps:
 - name: test
   image: maven:3.9.5-amazoncorretto-17-debian
   commands:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - mvn test -B
+---
+kind: pipeline
+name: test
+
+steps:
+- name: test
+  image: maven:3.9.5-amazoncorretto-17-debian
+  commands:
+  - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn test -B
+- name: build
+  image: maven:3.9.5-amazoncorretto-17-debian
+  commands:
+  - mvn package -DskipTests=true -B -V
+- name: publish
+  image: plugins/github-release
+  settings:
+    files: target/*.jar
+    title: Release
+
+trigger:
+  event:
+  - promote
+  target:
+  - production
