@@ -11,14 +11,17 @@ import kotlin.concurrent.write
  * A mutable list of bindings,
  * read and write operations are synchronized using a [ReentrantReadWriteLock]
  */
-class DependencyList: Bindable, Searchable {
+class DependencyList(private val allowDuplicates: Boolean): Bindable, Searchable {
 
     private val bindings = HashMap<Class<*>, MutableList<DependencyBinding<*>>>()
     private val lock = ReentrantReadWriteLock()
 
+    constructor(): this(false)
+
     override fun bind(binding: DependencyBinding<*>) = apply {
         lock.write {
             val bindings = this.bindings.computeIfAbsent(binding.type) { mutableListOf() }
+            if (!allowDuplicates) bindings.filter { it.tag == binding.tag }.let { duplicates -> bindings.removeAll(duplicates) }
             bindings.add(binding)
         }
     }

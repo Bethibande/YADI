@@ -47,4 +47,30 @@ class DependencyListTest {
         assertEquals(BINDING_4, bindings[1])
     }
 
+    @Test
+    fun test4() {
+        val view = DependencyList(false)
+
+        view.bind(BINDING_1)
+        assertEquals(BINDING_1, view.find(String::class.java, null))
+
+        val binding = DependencyBinding(String::class.java, null, DependencyProvider { "sdgfsd" })
+        view.bind(binding)
+
+        assertEquals(binding, view.find(String::class.java, null))
+    }
+
+    @Test
+    fun test5() {
+        val view = DependencyList(true)
+
+        view.bind(BINDING_1)
+        assertEquals(BINDING_1, view.find(String::class.java, null))
+
+        val binding = DependencyBinding(String::class.java, null, DependencyProvider { "sdgfsd" })
+        view.bind(binding)
+
+        assertEquals(BINDING_1, view.find(String::class.java, null))
+    }
+
 }

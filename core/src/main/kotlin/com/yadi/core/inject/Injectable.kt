@@ -11,8 +11,10 @@ interface Injectable: Bindable {
 
     class TypedBinder<T>(private val type: Class<T>, private val target: Bindable) {
 
-        fun bind(tag: Any?, provider: DependencyProvider<T>) = DependencyBinding(type, tag, provider)
-            .apply { target.bind(this) }
+        private val bindings = mutableListOf<DependencyBinding<*>>()
+
+        private fun bind(tag: Any?, provider: DependencyProvider<T>) = DependencyBinding(type, tag, provider)
+            .apply { bindings.add(this) }
 
         fun singleton(tag: Any?, fn: Factory<T>) = bind(tag, DependencyProvider.singleton(fn))
         fun singleton(fn: Factory<T>) = singleton(null, fn)
@@ -20,11 +22,20 @@ interface Injectable: Bindable {
         fun factory(tag: Any?, fn: Factory<T>) = bind(tag, DependencyProvider.factory(fn))
         fun factory(fn: Factory<T>) = bind(null, fn)
 
+        infix fun DependencyBinding<*>.tagged(tag: Any?) {
+            this.tag = tag
+        }
+
+        internal fun bindNow() {
+            bindings.forEach { binding -> target.bind(binding) }
+        }
+
     }
 
     fun <T> bind(type: Class<T>, fn: TypedBinder<T>.() -> Unit) = apply {
         val binder = TypedBinder(type, this)
         fn.invoke(binder)
+        binder.bindNow()
     }
 
     fun <T> bind(type: Class<T>, tag: Any?, provider: DependencyProvider<T>) = DependencyBinding(type, tag, provider)

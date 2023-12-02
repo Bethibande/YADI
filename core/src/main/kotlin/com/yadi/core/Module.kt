@@ -49,7 +49,7 @@ class Module(): Container, Injectable {
 
 class ModuleBuilder(vararg imports: Searchable): Injectable, InstanceProvider {
 
-    private val moduleBindings = DependencyList()
+    private val moduleBindings = DependencyList(true)
     private val importModule = Module().inject(*imports, moduleBindings)
 
     override fun bind(binding: DependencyBinding<*>): Bindable = moduleBindings.bind(binding)
@@ -61,6 +61,10 @@ class ModuleBuilder(vararg imports: Searchable): Injectable, InstanceProvider {
     override fun findAll(): List<DependencyBinding<*>> = importModule.findAll()
 
     fun moduleBindings() = moduleBindings
+
+    infix fun DependencyBinding<*>.tagged(tag: Any?) {
+        this.tag = tag
+    }
 
 }
 

@@ -12,8 +12,4 @@ data class DependencyBinding<T>(
 
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T = get()
 
-    infix fun tagged(tag: Any) {
-        this.tag = tag
-    }
-
 }

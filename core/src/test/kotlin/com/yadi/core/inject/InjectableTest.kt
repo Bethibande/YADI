@@ -115,11 +115,9 @@ class InjectableTest {
 
         injectable.bindSingleton<Service> { ServiceA() }
         injectable.bindSingleton<Service>("b") { ServiceB() }
-        injectable.bindSingleton<Service> { ServiceC() } tagged "c"
 
         assertIs<ServiceA>(view.find(Service::class.java, null)?.get())
         assertIs<ServiceB>(view.find(Service::class.java, "b")?.get())
-        assertIs<ServiceC>(view.find(Service::class.java, "c")?.get())
     }
 
     @Test
@@ -128,11 +126,9 @@ class InjectableTest {
 
         injectable.bindFactory<Service> { ServiceA() }
         injectable.bindFactory<Service>("b") { ServiceB() }
-        injectable.bindFactory<Service> { ServiceC() } tagged "c"
 
         assertIs<ServiceA>(view.find(Service::class.java, null)?.get())
         assertIs<ServiceB>(view.find(Service::class.java, "b")?.get())
-        assertIs<ServiceC>(view.find(Service::class.java, "c")?.get())
     }
 
 }
