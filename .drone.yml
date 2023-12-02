@@ -2,30 +2,48 @@ kind: pipeline
 name: test
 
 steps:
-- name: test
-  image: maven:3.9.5-amazoncorretto-17-debian
-  commands:
-  - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-  - mvn test -B
+  - name: settings
+    image: md5lukas/drone-mvn-settings
+    settings:
+      mirrors:
+        - name: Central Mirror
+          id: central-mirror
+          url: https://maven.bethibande.com/mirror
+          mirrorOf: central
+  - name: test
+    image: maven:3.9.5-amazoncorretto-17-debian
+    commands:
+      - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s settings.xml
+      - mvn test -B -s settings.xml
 ---
 kind: pipeline
 name: prodction
 
 steps:
-- name: test
-  image: maven:3.9.5-amazoncorretto-17-debian
-  commands:
-  - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-  - mvn test -B
-- name: build
-  image: maven:3.9.5-amazoncorretto-17-debian
-  commands:
-  - mvn package -DskipTests=true -B -V
-- name: publish
-  image: plugins/github-release
-  settings:
-    files: target/*.jar
-    title: Release
+  - name: settings
+    image: md5lukas/drone-mvn-settings
+    settings:
+      servers:
+        - name: bethibande-releases
+          id: bethibande-releases
+          url: https://maven.bethibande.com/releases
+      mirrors:
+        - name: Central Mirror
+          id: central-mirror
+          url: https://maven.bethibande.com/mirror
+          mirrorOf: central
+  - name: build
+    image: maven:3.9.5-amazoncorretto-17-debian
+    commands:
+      - mvn clean package -DskipTests=true -B -V -s settings.xml
+  - name: test
+    image: maven:3.9.5-amazoncorretto-17-debian
+    commands:
+      - mvn test -B -s settings.xml
+  - name: maven-deploy
+    image: maven:3.9.5-amazoncorretto-17-debian
+    commands:
+      - mvn deploy -s settings.xml
 
 trigger:
   event:
