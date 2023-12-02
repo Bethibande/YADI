@@ -1,5 +1,5 @@
 kind: pipeline
-name: test
+name: test-after-push
 
 steps:
   - name: settings
@@ -15,6 +15,10 @@ steps:
     commands:
       - mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -B -V -s settings.xml
       - mvn test -B -s settings.xml
+
+trigger:
+  event:
+    - push
 ---
 kind: pipeline
 name: prodction
@@ -26,12 +30,13 @@ steps:
       servers:
         - name: bethibande-releases
           id: bethibande-releases
-          url: https://maven.bethibande.com/releases
       mirrors:
         - name: Central Mirror
           id: central-mirror
           url: https://maven.bethibande.com/mirror
           mirrorOf: central
+      serverSecrets:
+        from_secret: maven_server_secrets
   - name: build
     image: maven:3.9.5-amazoncorretto-17-debian
     commands:
