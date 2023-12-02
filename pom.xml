@@ -6,7 +6,7 @@
 
     <artifactId>YADI-parent</artifactId>
     <groupId>com.yadi</groupId>
-    <version>0.9</version>
+    <version>1.0</version>
     <packaging>pom</packaging>
 
     <name>YADI</name>
